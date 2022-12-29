@@ -6,6 +6,6 @@ services:
     ports:
       - 80:6000
       - 81:6001
+      - 9001:9001
     volumes:
-      - ./chromium:/home/dockeruser/chromium
-##    - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+      - ./chrome:/home/dockeruser/chrome

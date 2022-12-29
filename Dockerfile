@@ -13,8 +13,9 @@ RUN apt-get update && \
     curl http://ftp.us.debian.org/debian/pool/main/libi/libindicator/libindicator3-7_0.5.0-4_amd64.deb --output /opt/libindicator3-7_0.5.0-4_amd64.deb && \
     apt-get install -y /opt/libappindicator3-1_0.4.92-7_amd64.deb /opt/libindicator3-7_0.5.0-4_amd64.deb
 
-RUN apt-get install -y xterm xdotool chromium qutebrowser
+RUN apt-get install -y xterm xdotool chromium supervisor
 ENV TERM xterm
+
 # Install NOVNC.
 RUN     git clone --branch master --single-branch https://github.com/novnc/noVNC.git /opt/noVNC; \
         git clone --branch v0.11.0 --single-branch https://github.com/novnc/websockify.git /opt/noVNC/utils/websockify; \
@@ -25,6 +26,8 @@ ENV QT_X11_NO_MITSHM=1 \
     _X11_NO_MITSHM=1 \
     _MITSHM=0
 
+RUN mkdir -p /var/log/supervisor
+RUN chmod 777 /var/log/supervisor
 
 # give every user read write access to the "/root" folder where the binary is cached
 RUN chmod 777 /root && mkdir /src
@@ -44,6 +47,8 @@ RUN echo  "debian version:  $(cat /etc/debian_version) \n" \
           "user:            $(whoami) \n"
 
 COPY scripts/entrypoint.sh /src
+COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 
 EXPOSE 6000 6001
 ENTRYPOINT ["/src/entrypoint.sh"]
