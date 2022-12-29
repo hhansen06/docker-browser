@@ -1,0 +1,11 @@
+services:
+  desktop:
+    image: hhansen06/docker-desktop
+    build: .
+    restart: always
+    ports:
+      - 80:6000
+      - 81:6001
+    volumes:
+      - ./chromium:/home/dockeruser/chromium
+##    - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
